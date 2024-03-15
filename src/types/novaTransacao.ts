@@ -19,7 +19,7 @@ elementoFormulario.addEventListener("submit", (e) => {
     "#data"
   ) as HTMLInputElement;
 
-  let tipoTransacao: string = inputTipoTransacao.value;
+  let tipoTransacao: TipoTransacao = inputTipoTransacao.value as TipoTransacao;
   let valor: number = inputValor.valueAsNumber;
   let data: Date = new Date(inputData.value);
 
