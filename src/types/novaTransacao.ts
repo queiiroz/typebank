@@ -23,11 +23,11 @@ elementoFormulario.addEventListener("submit", (e) => {
   let valor: number = inputValor.valueAsNumber;
   let data: Date = new Date(inputData.value);
 
-  if (tipoTransacao == "Depósito") {
+  if (tipoTransacao == TipoTransacao.DEPOSITO) {
     saldo += valor;
   } else if (
-    tipoTransacao == "Transferência" ||
-    tipoTransacao == "Pagamento de Boleto"
+    tipoTransacao == TipoTransacao.TRANFERENCIA ||
+    tipoTransacao == TipoTransacao.PAGAMENTO_BOLETO
   ) {
     saldo -= valor;
   } else {
@@ -35,7 +35,7 @@ elementoFormulario.addEventListener("submit", (e) => {
     return;
   }
 
-  elementoSaldo.textContent = saldo.toString();
+  elementoSaldo.textContent = formatarMoeda(saldo);
 
   const novaTransacao: Transacao = {
     tipoTransacao: tipoTransacao,
