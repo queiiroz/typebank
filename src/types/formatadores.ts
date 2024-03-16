@@ -20,3 +20,13 @@ function formatarData(data: Date, formato: TipoData = TipoData.PADRAO): string {
   }
   return data.toLocaleDateString("pt-br");
 }
+
+function formatarInformacoes(
+  valor: number,
+  data: Date,
+  formatoData: TipoData.DIA_MES
+): string {
+  const dataFormatada = formatarData(data, formatoData);
+  const valorFormatado = formatarMoeda(valor);
+  return `${dataFormatada} - ${valorFormatado}`;
+}
