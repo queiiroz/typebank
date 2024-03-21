@@ -1,12 +1,13 @@
 {
   "dependencies": {
+    "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   },
   "name": "typescript-bank",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch ./src/types/typebank.ts"
+    "dev": "tsx watch ./src/main.ts"
   },
   "author": "",
   "license": "ISC",
