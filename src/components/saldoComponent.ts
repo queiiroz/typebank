@@ -1,7 +1,7 @@
 import { TipoData } from "../types/formatoData.js";
 import { formatarData, formatarMoeda } from "../utils/formatadores.js";
 
-let saldo: number = 5000;
+let saldo: number = 4000;
 
 const elementoSaldo = document.querySelector(
   ".saldo-valor .valor"
