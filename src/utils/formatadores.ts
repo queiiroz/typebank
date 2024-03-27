@@ -1,4 +1,4 @@
-import { TipoData } from "../types/formatoData.js"
+import { TipoData } from "../types/formatoData.js";
 
 export function formatarMoeda(valor: number): string {
   return valor.toLocaleString("pt-br", {
@@ -6,7 +6,10 @@ export function formatarMoeda(valor: number): string {
     currency: "BRL",
   });
 }
-export function formatarData(data: Date, formato: TipoData = TipoData.PADRAO): string {
+export function formatarData(
+  data: Date,
+  formato: TipoData = TipoData.PADRAO
+): string {
   if (formato === TipoData.DIA_SEMANA_DIA_MES_ANO) {
     return data.toLocaleDateString("pt-br", {
       weekday: "long",
@@ -31,4 +34,20 @@ function formatarInformacoes(
   const dataFormatada = formatarData(data, formatoData);
   const valorFormatado = formatarMoeda(valor);
   return `${dataFormatada} - ${valorFormatado}`;
+}
+
+export function formaterParse<T>(key: string): T | null {
+  try {
+    const item = localStorage.getItem(key);
+    if (item == null) {
+      return null
+    }
+    return JSON.parse(item) as T;
+  } catch (err) {
+    if (err instanceof Error) {
+      alert(err.message);
+    } else {
+      alert("Erro desconhecido");
+    } return null
+  }
 }

@@ -1,7 +1,11 @@
+import { JsxEmit } from "../../node_modules/typescript/lib/typescript.js";
+import { formaterParse } from "../utils/formatadores.js";
 import { TipoTransacao } from "./TipoTransacao.js";
 import { Transacao } from "./Transacao.js";
 
-let saldo: number = 4000;
+let saldo = formaterParse<number>("saldo") || 0;
+
+const transacoes = formaterParse<Transacao[]>("transacoes") || [];
 
 function debitar(valor: number): void {
   if (valor <= 0) {
@@ -11,6 +15,7 @@ function debitar(valor: number): void {
     throw new Error("Saldo insuficiente");
   }
   saldo -= valor;
+  localStorage.setItem("saldo", saldo.toString())
 }
 
 function depositar(valor: number): void {
@@ -18,6 +23,7 @@ function depositar(valor: number): void {
     throw new Error("O valor a ser depositado deve ser maior que zero");
   }
   saldo += valor;
+  localStorage.setItem("saldo", saldo.toString())
 }
 
 const Conta = {
@@ -40,8 +46,9 @@ const Conta = {
     } else {
       throw new Error("Tipo de Transação é inválido!");
     }
-
-    console.log(novaTransacao);
+    transacoes.push(novaTransacao);
+    localStorage.setItem("transacoes", JSON.stringify(transacoes));
+    console.log(transacoes);
   },
 };
 

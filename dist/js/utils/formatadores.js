@@ -27,3 +27,21 @@ function formatarInformacoes(valor, data, formatoData) {
     const valorFormatado = formatarMoeda(valor);
     return `${dataFormatada} - ${valorFormatado}`;
 }
+export function formaterParse(key) {
+    try {
+        const item = localStorage.getItem(key);
+        if (item == null) {
+            return null;
+        }
+        return JSON.parse(item);
+    }
+    catch (err) {
+        if (err instanceof Error) {
+            alert(err.message);
+        }
+        else {
+            alert("Erro desconhecido");
+        }
+        return null;
+    }
+}
