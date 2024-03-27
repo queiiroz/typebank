@@ -1,6 +1,6 @@
 # TypeBank
 
-<p align="center"> <img src="./dist/images/imagem-projeto.png"</p>
+<p align="center"> <img src="./src/images/imagem-projeto.png"</p>
 
 <hr>
 
@@ -17,7 +17,7 @@ A aplicação que foi desenvolvida faz registro de transações em uma conta do 
 <table>
   <tr>
     <td>
-     <img src="./dist/images/avatar-gleidsonqueiroz.png" width="100px"/>
+     <img src="./src/images/avatar-gleidsonqueiroz.png" width="100px"/>
     </td>
     <td>
       Feito por Gleidson Queiroz.</a> 🙋🏼‍♂️
