@@ -41,9 +41,9 @@ elementoFormulario.addEventListener("submit", function (e) {
     elementoFormulario.reset();
   } catch (err) {
     if (err instanceof Error) {
-      alert(err.message);
+      alert(`Erro no novaTransacao: ${err.message}`);
     } else {
-      alert("Erro desconhecido")
+      alert("Erro desconhecido");
     }
   }
 });

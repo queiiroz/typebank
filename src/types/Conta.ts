@@ -1,11 +1,18 @@
 import { JsxEmit } from "../../node_modules/typescript/lib/typescript.js";
 import { formaterParse } from "../utils/formatadores.js";
+import { GrupoTransacao } from "./GrupoTransacao.js";
 import { TipoTransacao } from "./TipoTransacao.js";
 import { Transacao } from "./Transacao.js";
 
 let saldo = formaterParse<number>("saldo") || 0;
 
-const transacoes = formaterParse<Transacao[]>("transacoes") || [];
+const transacoes =
+  formaterParse<Transacao[]>("transacoes", (key, value) => {
+    if (key === "data") {
+      return new Date(value);
+    }
+    return value;
+  }) || [];
 
 function debitar(valor: number): void {
   if (valor <= 0) {
@@ -15,7 +22,7 @@ function debitar(valor: number): void {
     throw new Error("Saldo insuficiente");
   }
   saldo -= valor;
-  localStorage.setItem("saldo", saldo.toString())
+  localStorage.setItem("saldo", saldo.toString());
 }
 
 function depositar(valor: number): void {
@@ -23,7 +30,7 @@ function depositar(valor: number): void {
     throw new Error("O valor a ser depositado deve ser maior que zero");
   }
   saldo += valor;
-  localStorage.setItem("saldo", saldo.toString())
+  localStorage.setItem("saldo", saldo.toString());
 }
 
 const Conta = {
@@ -33,6 +40,31 @@ const Conta = {
 
   getDataAcesso(): Date {
     return new Date();
+  },
+
+  getGruposTransacoes(): GrupoTransacao[] {
+    const gruposTransacoes: GrupoTransacao[] = [];
+    const listaTransacoes = structuredClone(transacoes);
+    const transacoesOrdenadas = listaTransacoes.sort(
+      (t1, t2) => new Date(t2.data).getTime() - new Date(t2.data).getTime()
+    );
+    let labelAtualGrupoTransacao: string = "";
+
+    for (let transacao of transacoesOrdenadas) {
+      let labelGrupoTransacao: string = new Date(
+        transacao.data
+      ).toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+      if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+        labelAtualGrupoTransacao = labelGrupoTransacao;
+        gruposTransacoes.push({
+          label: labelGrupoTransacao,
+          transacoes: [],
+        });
+      }
+      gruposTransacoes[gruposTransacoes.length - 1].transacoes.push(transacao);
+    }
+
+    return gruposTransacoes;
   },
 
   registrarTransacao(novaTransacao: Transacao): void {
@@ -47,8 +79,8 @@ const Conta = {
       throw new Error("Tipo de Transação é inválido!");
     }
     transacoes.push(novaTransacao);
+    console.log(this.getGruposTransacoes());
     localStorage.setItem("transacoes", JSON.stringify(transacoes));
-    console.log(transacoes);
   },
 };
 

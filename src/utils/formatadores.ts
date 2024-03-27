@@ -36,13 +36,13 @@ function formatarInformacoes(
   return `${dataFormatada} - ${valorFormatado}`;
 }
 
-export function formaterParse<T>(key: string): T | null {
+export function formaterParse<T>(key: string, callback?:(key:string, value:string) => any): T | null {
   try {
     const item = localStorage.getItem(key);
     if (item == null) {
       return null
     }
-    return JSON.parse(item) as T;
+    return JSON.parse(item, callback) as T;
   } catch (err) {
     if (err instanceof Error) {
       alert(err.message);

@@ -1,7 +1,12 @@
 import { formaterParse } from "../utils/formatadores.js";
 import { TipoTransacao } from "./TipoTransacao.js";
 let saldo = formaterParse("saldo") || 0;
-const transacoes = formaterParse("transacoes") || [];
+const transacoes = formaterParse("transacoes", (key, value) => {
+    if (key === "data") {
+        return new Date(value);
+    }
+    return value;
+}) || [];
 function debitar(valor) {
     if (valor <= 0) {
         throw new Error("O valor a ser debitado deve ser maior que zero");
@@ -26,6 +31,24 @@ const Conta = {
     getDataAcesso() {
         return new Date();
     },
+    getGruposTransacoes() {
+        const gruposTransacoes = [];
+        const listaTransacoes = structuredClone(transacoes);
+        const transacoesOrdenadas = listaTransacoes.sort((t1, t2) => new Date(t2.data).getTime() - new Date(t2.data).getTime());
+        let labelAtualGrupoTransacao = "";
+        for (let transacao of transacoesOrdenadas) {
+            let labelGrupoTransacao = new Date(transacao.data).toLocaleDateString("pt-br", { month: "long", year: "numeric" });
+            if (labelAtualGrupoTransacao !== labelGrupoTransacao) {
+                labelAtualGrupoTransacao = labelGrupoTransacao;
+                gruposTransacoes.push({
+                    label: labelGrupoTransacao,
+                    transacoes: [],
+                });
+            }
+            gruposTransacoes[gruposTransacoes.length - 1].transacoes.push(transacao);
+        }
+        return gruposTransacoes;
+    },
     registrarTransacao(novaTransacao) {
         if (novaTransacao.tipoTransacao == TipoTransacao.DEPOSITO) {
             depositar(novaTransacao.valor);
@@ -38,8 +61,8 @@ const Conta = {
             throw new Error("Tipo de Transação é inválido!");
         }
         transacoes.push(novaTransacao);
+        console.log(this.getGruposTransacoes());
         localStorage.setItem("transacoes", JSON.stringify(transacoes));
-        console.log(transacoes);
     },
 };
 export default Conta;
