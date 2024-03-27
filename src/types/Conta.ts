@@ -1,4 +1,3 @@
-import { JsxEmit } from "../../node_modules/typescript/lib/typescript.js";
 import { formaterParse } from "../utils/formatadores.js";
 import { GrupoTransacao } from "./GrupoTransacao.js";
 import { TipoTransacao } from "./TipoTransacao.js";
